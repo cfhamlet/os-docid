@@ -1,0 +1,23 @@
+language: python
+sudo: false
+python:
+- '2.6'
+- '2.7'
+install:
+- pip install -r requirements.txt
+- pip install -e .
+- pip install pytest
+- pip install pytest-env
+- pip install coverage
+- pip install codecov
+script:
+- coverage erase
+- coverage run -m pytest
+- coverage combine
+after_success:
+- codecov
+deploy:
+  provider: pypi
+  user: cfhamlet
+  password:
+    secure: nFYKwg3xxonmBcD1ShboieTr6U//yAdBgwc4jKugjDXoQa44JSTBHeHArlzHJT2ms3ccEryANi1Q8nT+jUb3JkAlx5Wy5sOhPDe0pZWhlv2n5cOkRvECBK86eNMebgEm1uH1yuR+xg0tjVa3qKDAYysUXDvbjZIWKNFUUs27cqIYCs0tj3CBYK8udnuCvaU80dSTJSdZw5mHxlR60ym8rPuK3EDaO29bx+TmYEqUiY8/RMky5F0dyUGpJN2SiUT4ZMDsVYXhR1A2WukOfVP2JFNwLNDjPnIteGlM/v579XlC1gT48YKnxqLOZB5GrtKKOzFR7kOiFAjz9xzLtQ6P65sp5AwxgX+UMzkZQ7FbQCmcBQU7pzhANI8tFwtWYtK4/YuyhnBOzEvVigvVTT1p6xck507MO9OCQ3b6AxknUoxBap3CgYSGs9SnEVBjoYcrIJJjerwxl7YYKvn63v5nf2+8r0dITYDFyPRL/vVHY9lZ8KvOaen2tq1e/uSmJSvIs5M3+lPF+fPxvREo5wynG1nsirOSEOALaP0VKywykAf/cG41fc2l0GGeVYNZqkP5Ef7jQ5uiczW3VCVW7X0elrNKDAmPJJ3kAeUQoyGd1Oz816YZfoeA4AowAUK/kAEz6GfT/JkKIIusQwgvEn1YiXrRamheljU6wrqO4xDl0TY=

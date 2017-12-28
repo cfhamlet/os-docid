@@ -1,0 +1,9 @@
+[run]
+parallel = true
+branch = true
+source = os_tornado
+
+[paths]
+source =
+    src/os_tornado
+    .tox/*/lib/python*/site-packages/os_tornado
