@@ -1,7 +1,7 @@
 # os-docid
 
 [![Build Status](https://www.travis-ci.org/cfhamlet/os-docid.svg?branch=master)](https://www.travis-ci.org/cfhamlet/os-docid)
-[![codecov](https://codecov.io/gh/cfhamlet/os-docid/master/graph/badge.svg)](https://codecov.io/gh/cfhamlet/os-docid)
+[![codecov](https://codecov.io/gh/cfhamlet/os-docid/branch/master/graph/badge.svg)](https://codecov.io/gh/cfhamlet/os-docid)
 
 DocID for fun. (Python2)
 
