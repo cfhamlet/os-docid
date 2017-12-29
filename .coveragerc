@@ -1,0 +1,9 @@
+[run]
+parallel = true
+branch = true
+source = os_docid
+
+[paths]
+source =
+    src/os_docid
+    .tox/*/lib/python*/site-packages/os_docid
