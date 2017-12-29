@@ -1,9 +1,9 @@
 [run]
 parallel = true
 branch = true
-source = os_tornado
+source = os_docid
 
 [paths]
 source =
-    src/os_tornado
-    .tox/*/lib/python*/site-packages/os_tornado
+    src/os_docid
+    .tox/*/lib/python*/site-packages/os_docid

@@ -1,5 +1,5 @@
 import sys
-from parser import parse
+from parser import parse as docid
 
 __all__ = ['__version__', 'version_info']
 
@@ -14,4 +14,4 @@ if sys.version_info < (2, 6):
     sys.exit(1)
 
 del sys
-#del parser
+del parser

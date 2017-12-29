@@ -2,14 +2,15 @@ import hashlib
 from docid import DocID
 
 
-_DOMAINID_LENGTH = 8
-_SITEID_LENGTH = 8
-_URLID_LENGTH = 16
-_HEX_DOMAINID_LENGTH = _DOMAINID_LENGTH * 2
-_HEX_SITEID_LENGTH = _SITEID_LENGTH * 2
-_HEX_URLID_LENGTH = _URLID_LENGTH * 2
-_HEX_HOSTID_LENGTH = _HEX_DOMAINID_LENGTH + _HEX_SITEID_LENGTH
-_HEX_DOCID_LENGTH = _HEX_HOSTID_LENGTH + _HEX_URLID_LENGTH
+_DOMAINID_LENGTH = 16
+_SITEID_LENGTH = 16
+_URLID_LENGTH = 32
+_HOSTID_LENGTH = _DOMAINID_LENGTH + _SITEID_LENGTH
+_DOCID_LENGTH = _HOSTID_LENGTH + _URLID_LENGTH
+
+_BYTE_DOMAINID_LENGTH = _DOMAINID_LENGTH / 2
+_BYTE_SITEID_LENGTH = _SITEID_LENGTH / 2
+_BYTE_URLID_LENGTH = _URLID_LENGTH / 2
 _HEX = set([i for i in '0123456789abcdefABCDEF'])
 
 _SECOND_DOMAIN_SET = set([
@@ -31,13 +32,13 @@ _TOP_DOMAIN_SET = set([
 
 
 def _docid_from_string_parts(domainid, siteid, urlid):
-    return DocID(domainid.decode('hex'), siteid.decode('hex'), urlid.deocde('hex'))
+    return DocID(domainid.decode('hex'), siteid.decode('hex'), urlid.decode('hex'))
 
 
 def _docid_from_url(url, start_index):
     domain, site = _parse_url(url, start_index)
-    domainid = hashlib.md5(domain).digest()[0:_DOMAINID_LENGTH]
-    siteid = hashlib.md5(site).digest()[0:_SITEID_LENGTH]
+    domainid = hashlib.md5(domain).digest()[0:_BYTE_DOMAINID_LENGTH]
+    siteid = hashlib.md5(site).digest()[0:_BYTE_SITEID_LENGTH]
     urlid = hashlib.md5(url).digest()
     return DocID(domainid, siteid, urlid)
 
@@ -84,22 +85,23 @@ def parse(data):
     assert isinstance(data, basestring)
     idx = 0
     for c in data:
-        if c not in _HEX or (c == '-' and (idx != _HEX_DOMAINID_LENGTH
-                                           and idx != _HEX_HOSTID_LENGTH + 1)):
-            return _docid_from_url(data, idx)
+        if c not in _HEX:
+            if not (c == '-' and (idx == _DOMAINID_LENGTH
+                                  or idx == _HOSTID_LENGTH + 1)):
+                return _docid_from_url(data, idx)
         idx += 1
-        if idx > _HEX_DOCID_LENGTH + 2:
+        if idx > _DOCID_LENGTH + 2:
             break
-    if idx == _HEX_DOCID_LENGTH:
-        return _docid_from_string_parts(data[0:_HEX_DOMAINID_LENGTH],
-                                        data[_HEX_DOMAINID_LENGTH:_HEX_HOSTID_LENGTH],
-                                        data[_HEX_HOSTID_LENGTH:])
-    elif idx == _HEX_DOCID_LENGTH + 2 \
-            and data[_HEX_DOCID_LENGTH] == '-' \
-            and data[_HEX_HOSTID_LENGTH + 1] == '-':
-        return _docid_from_string_parts(data[0:_HEX_DOMAINID_LENGTH],
-                                        data[_HEX_DOMAINID_LENGTH +
-                                             1:_HEX_HOSTID_LENGTH + 1],
-                                        data[_HEX_HOSTID_LENGTH + 2:])
+    if idx == _DOCID_LENGTH:
+        return _docid_from_string_parts(data[0:_DOMAINID_LENGTH],
+                                        data[_DOMAINID_LENGTH:_HOSTID_LENGTH],
+                                        data[_HOSTID_LENGTH:])
+    elif idx == (_DOCID_LENGTH + 2) \
+            and data[_DOMAINID_LENGTH] == '-' \
+            and data[_HOSTID_LENGTH + 1] == '-':
+        return _docid_from_string_parts(data[0:_DOMAINID_LENGTH],
+                                        data[_DOMAINID_LENGTH +
+                                             1:_HOSTID_LENGTH + 1],
+                                        data[_HOSTID_LENGTH + 2:])
     else:
         raise ValueError('Not docid or url')
