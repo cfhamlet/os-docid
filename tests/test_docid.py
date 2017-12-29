@@ -32,3 +32,7 @@ def test_invalid_data():
     for data in test_data:
         with pytest.raises(ValueError):
             docid(data)
+
+def test_benchmark_docid(benchmark):
+    result = benchmark(docid, 'http://www.google.com/')
+    assert str(result) == '1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd'

@@ -10,6 +10,7 @@ install:
 - pip install pytest-env
 - pip install coverage
 - pip install codecov
+- pip install pytest-benchmark
 script:
 - coverage erase
 - coverage run -m pytest
