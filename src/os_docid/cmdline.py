@@ -29,7 +29,7 @@ def execute(argv=None):
             d = docid(line)
         except:
             pass
-        print '\t'.join([str(i) for i in (d, line)])
+        print '\t'.join([i for i in (line, str(d))])
 
 
 if __name__ == '__main__':
