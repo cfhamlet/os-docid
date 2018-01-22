@@ -26,7 +26,6 @@ DocID for fun. (Python2)
   
   >>> docid('abc')  
   NotImplementedError: Not supported data format
- 
   ```
 
   * Command line
