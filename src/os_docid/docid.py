@@ -7,3 +7,5 @@ class DocID(object):
 
     def __str__(self):
         return '-'.join([binascii.hexlify(i) for i in self._b_parts])
+
+    __repr__ = __str__
