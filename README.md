@@ -13,19 +13,20 @@ DocID for fun. (Python2)
 
   * API
   ```
-    from os_docid import docid
-
-    print docid('http://www.google.com/') 
-    # 1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
-
-    print docid('1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd') 
-    # 1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
-
-    print docid('1d5920f4b44b27a8ed646a3334ca891fff90821feeb2b02a33a6f9fc8e5f3fcd')
-    # 1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
-    
-    print docid('abc')
-    # raise NotImplementedError
+  >>> from os_docid import docid
+  
+  >>> docid('http://www.google.com/')
+  1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
+  
+  >>> docid('1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd')
+  1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
+  
+  >>> docid('1d5920f4b44b27a8ed646a3334ca891fff90821feeb2b02a33a6f9fc8e5f3fcd')
+  1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
+  
+  >>> docid('abc')  
+  NotImplementedError: Not supported data format
+ 
   ```
 
   * Command line
