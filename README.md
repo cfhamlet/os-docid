@@ -25,7 +25,7 @@ DocID for fun. (Python2)
     # 1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
     
     print docid('abc')
-    # raise ValueError
+    # raise NotImplementedError
   ```
 
   * Command line
