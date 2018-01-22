@@ -8,6 +8,8 @@ def test_from_url():
          '1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd'),
         ('http://www.google.com',
          '1d5920f4b44b27a8-ed646a3334ca891f-ed646a3334ca891fd3467db131372140'),
+        ('http://www.google.com.hk/abc',
+         'da90da7194dbc779-a735b82241adc4d2-d896d112b3ee45903c11a2cf67d4059f'),
     ]
     for url, expected in test_data:
         assert str(docid(url)) == expected
@@ -30,5 +32,5 @@ def test_invalid_data():
         'abc',
     ]
     for data in test_data:
-        with pytest.raises(ValueError):
+        with pytest.raises(NotImplementedError):
             docid(data)
