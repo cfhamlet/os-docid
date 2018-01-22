@@ -24,11 +24,19 @@ def call(cmdline, env=None, **kwargs):
 
 
 def test_cmdline(tmpdir):
-    f = tmpdir.join('testfile')
-    f.write('http://www.google.com/')
-    cmdline = '-f %s' % f.strpath
-    stdout, stderr = call(cmdline)
-    assert '1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd' in stdout
+    data = [
+        ('http://www.google.com/',
+         '1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd'),
+        ('1' * 10 + 'Y' + '1' * 53, 'None'),
+    ]
+    count = 0
+    for d, expected in data:
+        count += 1
+        f = tmpdir.join('testfile_%d' % count)
+        f.write(d)
+        cmdline = '-f %s' % f.strpath
+        stdout, _ = call(cmdline)
+        assert expected in stdout
 
 
 if __name__ == "__main__":
