@@ -1,5 +1,5 @@
 import sys
-from parser import parse as docid
+from .parser import parse as docid
 
 __all__ = ['__version__', 'version_info']
 
@@ -12,6 +12,3 @@ del pkgutil
 if sys.version_info < (2, 6):
     print("os-docid %s requires Python 2.6" % __version__)
     sys.exit(1)
-
-del sys
-del parser

@@ -1,6 +1,6 @@
 import hashlib
-from docid import DocID
 
+from .docid import DocID
 
 _DOMAINID_LENGTH = 16
 _SITEID_LENGTH = 16
@@ -9,9 +9,9 @@ _HOSTID_LENGTH = _DOMAINID_LENGTH + _SITEID_LENGTH
 _DOCID_LENGTH = _HOSTID_LENGTH + _URLID_LENGTH
 _READABLE_DOCID_LENGTH = _DOCID_LENGTH + 2
 
-_BYTE_DOMAINID_LENGTH = _DOMAINID_LENGTH / 2
-_BYTE_SITEID_LENGTH = _SITEID_LENGTH / 2
-_BYTE_URLID_LENGTH = _URLID_LENGTH / 2
+_BYTE_DOMAINID_LENGTH = _DOMAINID_LENGTH // 2
+_BYTE_SITEID_LENGTH = _SITEID_LENGTH // 2
+_BYTE_URLID_LENGTH = _URLID_LENGTH // 2
 _HEX = set([i for i in '0123456789abcdefABCDEF'])
 
 _SECOND_DOMAIN_SET = set([
@@ -33,9 +33,9 @@ _TOP_DOMAIN_SET = set([
 
 
 def _docid_from_string_parts(domainid_str, siteid_str, urlid_str):
-    return DocID(domainid_str.decode('hex'),
-                 siteid_str.decode('hex'),
-                 urlid_str.decode('hex'))
+    return DocID(bytearray.fromhex(domainid_str),
+                 bytearray.fromhex(siteid_str),
+                 bytearray.fromhex(urlid_str))
 
 
 class Parser(object):
@@ -58,11 +58,11 @@ class UrlParser(Parser):
         else:
             domain, self._last_site = self._parse_url(url, start_idx)
             self._last_site_length = len(self._last_site)
-            self._last_domainid = hashlib.md5(domain).digest()[
+            self._last_domainid = hashlib.md5(domain.encode('utf8')).digest()[
                 0:_BYTE_DOMAINID_LENGTH]
-            self._last_siteid = hashlib.md5(self._last_site).digest()[
+            self._last_siteid = hashlib.md5(self._last_site.encode('utf8')).digest()[
                 0:_BYTE_SITEID_LENGTH]
-        urlid = hashlib.md5(url).digest()
+        urlid = hashlib.md5(url.encode('utf8')).digest()
         return DocID(self._last_domainid, self._last_siteid, urlid)
 
     def _parse_url(self, url, start_index=0):
@@ -125,7 +125,6 @@ _R_DOCID_PARSER = ReadableDocIDParser()
 
 
 def parse(data):
-    assert isinstance(data, basestring)
     parser = _URL_PARSER
     idx = 0
     for c in data:
