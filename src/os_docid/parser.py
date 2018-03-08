@@ -14,7 +14,7 @@ _BYTE_SITEID_LENGTH = _SITEID_LENGTH // 2
 _BYTE_URLID_LENGTH = _URLID_LENGTH // 2
 _HEX = set([i for i in '0123456789abcdefABCDEF'])
 
-_SECOND_DOMAIN_SET = set([
+_SECOND_DOMAIN_SET = {
     "ha", "hb", "ac", "sc", "gd", "sd", "he", "ah", "qh", "sh", "hi",
     "bj", "fj", "tj", "xj", "zj", "hk", "hl", "jl", "nm", "hn", "ln",
     "sn", "yn", "co", "mo", "cq", "gs", "js", "tw", "gx", "jx", "nx",
@@ -22,14 +22,14 @@ _SECOND_DOMAIN_SET = set([
     "cat", "edu", "net", "biz", "mil", "int", "com", "gov", "org", "pro",
     "name", "aero", "info", "coop", "jobs", "mobi", "arpa",
     "travel", "museum",
-])
+}
 
-_TOP_DOMAIN_SET = set([
+_TOP_DOMAIN_SET = {
     "ac", "co",
     "cat", "edu", "net", "biz", "mil", "int", "com", "gov", "org", "pro",
     "name", "aero", "info", "coop", "jobs", "mobi", "arpa",
     "travel", "museum",
-])
+}
 
 
 def _docid_from_string_parts(domainid_str, siteid_str, urlid_str):
