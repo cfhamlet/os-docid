@@ -58,11 +58,11 @@ class UrlParser(Parser):
         else:
             domain, self._last_site = self._parse_url(url, start_idx)
             self._last_site_length = len(self._last_site)
-            self._last_domainid = hashlib.md5(domain.encode('utf8')).digest()[
+            self._last_domainid = hashlib.md5(domain).digest()[
                 0:_BYTE_DOMAINID_LENGTH]
-            self._last_siteid = hashlib.md5(self._last_site.encode('utf8')).digest()[
+            self._last_siteid = hashlib.md5(self._last_site).digest()[
                 0:_BYTE_SITEID_LENGTH]
-        urlid = hashlib.md5(url.encode('utf8')).digest()
+        urlid = hashlib.md5(url).digest()
         return DocID(self._last_domainid, self._last_siteid, urlid)
 
     def _parse_url(self, url, start_index=0):

@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import argparse
 import os
 import sys
@@ -16,11 +14,11 @@ def check_exist(value):
 
 
 def print_all(line, d):
-    print("\t".join((line, str(d))))
+    print "\t".join((line, str(d)))
 
 
 def print_docid(line, d):
-    print(d)
+    print d
 
 
 OUTPUT = {'a': print_all, 'o': print_docid}
@@ -39,7 +37,7 @@ def execute(argv=None):
 
     input_file = sys.stdin
     if args.input_file:
-        input_file = open(args.input_file, 'r')
+        input_file = open(args.input_file, 'rb')
     print_func = OUTPUT[args.output]
 
     for line in input_file:
