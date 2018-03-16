@@ -138,7 +138,7 @@ _R_DOCID_PARSER = ReadableDocIDParser()
 
 
 def parse(data):
-    data = data.encode()
+    data = data.encode('ascii')
     parser = _URL_PARSER
     idx = 0
     for c in data:

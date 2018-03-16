@@ -7,6 +7,8 @@ import sys
 
 from os_docid import docid
 
+PY3 = sys.version_info[0] == 3
+
 
 def check_exist(value):
     if not value:
@@ -16,15 +18,43 @@ def check_exist(value):
     return value
 
 
-def print_all(line, d):
-    print("\t".join((line, str(d))))
+def _get_input(args):
+    io_input = sys.stdin
+    if PY3:
+        io_input = sys.stdin.buffer
+
+    if args.input_file:
+        io_input = open(args.input_file, 'rb')
+
+    return io_input
 
 
-def print_docid(line, d):
-    print(d)
+def _get_output(args):
+    io_output = sys.stdout
+    if PY3:
+        io_output = sys.stdout.buffer
+    return io_output
 
 
-OUTPUT = {'a': print_all, 'o': print_docid}
+def output_all(io_output, line, d):
+    io_output.write(line)
+    io_output.write(b'\t')
+    if d is None:
+        io_output.write(b'None')
+    else:
+        io_output.write(d.bytes())
+    io_output.write(b'\n')
+
+
+def output_docid(io_output, line, d):
+    if d is None:
+        io_output.write(b'None')
+    else:
+        io_output.write(d.bytes())
+    io_output.write(b'\n')
+
+
+OUTPUT = {'a': output_all, 'o': output_docid}
 
 
 def execute(argv=None):
@@ -38,21 +68,20 @@ def execute(argv=None):
         default='o', action='store', dest='output', choices=OUTPUT.keys())
     args = parser.parse_args(argv[1:])
 
-    input_file = sys.stdin
-    if args.input_file:
-        input_file = open(args.input_file, 'r')
-    print_func = OUTPUT[args.output]
+    io_input = _get_input(args)
+    io_output = _get_output(args)
+    output_func = OUTPUT[args.output]
 
-    for line in input_file:
+    for line in io_input:
         line = line.strip()
         if not line:
             continue
         d = None
         try:
-            d = docid(line)
+            d = docid(line.decode('ascii'))
         except:
             pass
-        print_func(line, d)
+        output_func(io_output, line, d)
 
 
 if __name__ == '__main__':
