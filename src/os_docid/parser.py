@@ -21,7 +21,7 @@ _SLASH = b'/'[0]
 _DOT = b'.'[0]
 _COLON = b':'[0]
 
-_SECOND_DOMAIN_SET = {
+_SECOND_DOMAIN_SET = set([
     "ha", "hb", "ac", "sc", "gd", "sd", "he", "ah", "qh", "sh", "hi",
     "bj", "fj", "tj", "xj", "zj", "hk", "hl", "jl", "nm", "hn", "ln",
     "sn", "yn", "co", "mo", "cq", "gs", "js", "tw", "gx", "jx", "nx",
@@ -29,16 +29,16 @@ _SECOND_DOMAIN_SET = {
     "cat", "edu", "net", "biz", "mil", "int", "com", "gov", "org", "pro",
     "name", "aero", "info", "coop", "jobs", "mobi", "arpa",
     "travel", "museum",
-}
+])
 
 _SECOND_DOMAIN_SET = set([i.encode() for i in _SECOND_DOMAIN_SET])
 
-_TOP_DOMAIN_SET = {
+_TOP_DOMAIN_SET = set([
     "ac", "co",
     "cat", "edu", "net", "biz", "mil", "int", "com", "gov", "org", "pro",
     "name", "aero", "info", "coop", "jobs", "mobi", "arpa",
     "travel", "museum",
-}
+])
 
 _TOP_DOMAIN_SET = set([i.encode() for i in _TOP_DOMAIN_SET])
 
