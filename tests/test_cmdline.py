@@ -28,7 +28,7 @@ def test_cmdline(tmpdir):
     data = [
         ('http://www.google.com/',
          b'1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd'),
-        ('1' * 10 + 'Y' + '1' * 53, b'None'),
+        ('1' * 10 + 'Y' + '1' * 53, b'E'),
     ]
     count = 0
     for d, expected in data:

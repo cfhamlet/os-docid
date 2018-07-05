@@ -1,7 +1,10 @@
+"""Generate DocID from URL.
+
+This file can be used alone.
+"""
+
 import binascii
 import hashlib
-
-from .docid import DocID
 
 _DOMAINID_LENGTH = 16
 _SITEID_LENGTH = 16
@@ -16,10 +19,10 @@ _BYTE_URLID_LENGTH = _URLID_LENGTH // 2
 
 _HEX = set([i for i in b'0123456789abcdefABCDEF'])
 
-_M_SIGN = b'-'[0]
-_SLASH = b'/'[0]
-_DOT = b'.'[0]
-_COLON = b':'[0]
+_SYM_MINUS = b'-'[0]
+_SYM_SLASH = b'/'[0]
+_SYM_DOT = b'.'[0]
+_SYM_COLON = b':'[0]
 
 _SECOND_DOMAIN_SET = set([
     "ha", "hb", "ac", "sc", "gd", "sd", "he", "ah", "qh", "sh", "hi",
@@ -31,7 +34,7 @@ _SECOND_DOMAIN_SET = set([
     "travel", "museum",
 ])
 
-_SECOND_DOMAIN_SET = set([i.encode() for i in _SECOND_DOMAIN_SET])
+_SECOND_DOMAIN_SET = set([_i.encode() for _i in _SECOND_DOMAIN_SET])
 
 _TOP_DOMAIN_SET = set([
     "ac", "co",
@@ -40,7 +43,21 @@ _TOP_DOMAIN_SET = set([
     "travel", "museum",
 ])
 
-_TOP_DOMAIN_SET = set([i.encode() for i in _TOP_DOMAIN_SET])
+
+_TOP_DOMAIN_SET = set([_i.encode() for _i in _TOP_DOMAIN_SET])
+
+
+class DocID(object):
+    def __init__(self, b_domainid, b_siteid, b_urlid):
+        self._b_parts = (b_domainid, b_siteid, b_urlid)
+
+    def __str__(self):
+        return self.bytes().decode()
+
+    def bytes(self):
+        return b'-'.join([binascii.hexlify(_i) for _i in self._b_parts])
+
+    __repr__ = __str__
 
 
 def _docid_frox_hex(domainid, siteid, urlid):
@@ -68,7 +85,7 @@ class UrlParser(Parser):
     def parse(self, url, start_idx=0):
         if self._last_site and url.startswith(self._last_site) \
                 and len(url) > self._last_site_length \
-                and url[self._last_site_length] == _SLASH:
+                and url[self._last_site_length] == _SYM_SLASH:
             pass
         else:
             domain, self._last_site = self._parse_url(url, start_idx)
@@ -84,30 +101,32 @@ class UrlParser(Parser):
         domain_head = domain_tail = domain_pre_head = domain_post_head = -1
         find_domain = deal_domain = False
 
-        i = start_index
-        while i < url_length:
-            c = url[i]
-            if c == _DOT:
+        _i = start_index
+        while _i < url_length:
+            _c = url[_i]
+            if _c == _SYM_DOT:
                 deal_domain = True
-            elif c == _SLASH:
+            elif _c == _SYM_SLASH:
                 break
-            elif c == _COLON:
-                if i + 2 < url_length and url[i + 1] == _SLASH and url[i + 2] == _SLASH:
-                    i += 3
-                    domain_head = domain_pre_head = domain_post_head = domain_tail = i
+            elif _c == _SYM_COLON:
+                if _i + 2 < url_length \
+                        and url[_i + 1] == _SYM_SLASH \
+                        and url[_i + 2] == _SYM_SLASH:
+                    _i += 3
+                    domain_head = domain_pre_head = domain_post_head = domain_tail = _i
                     continue
                 elif not find_domain:
                     deal_domain = True
                     find_domain = True
             if deal_domain:
-                domain_pre_head,  domain_head = domain_head, domain_post_head
-                domain_post_head, domain_tail = domain_tail, i
+                domain_pre_head, domain_head = domain_head, domain_post_head
+                domain_post_head, domain_tail = domain_tail, _i
                 deal_domain = False
-            i += 1
-        host_tail = i
+            _i += 1
+        host_tail = _i
         if not find_domain:
             domain_pre_head, domain_head = domain_head, domain_post_head
-            domain_post_head, domain_tail = domain_tail, i
+            domain_post_head, domain_tail = domain_tail, _i
         if url[domain_head + 1:domain_post_head] in _SECOND_DOMAIN_SET \
                 and not url[domain_post_head + 1:domain_tail] in _TOP_DOMAIN_SET:
             domain_head = domain_pre_head
@@ -137,26 +156,55 @@ _DOCID_PARSER = DocIDParser()
 _R_DOCID_PARSER = ReadableDocIDParser()
 
 
-def parse(data):
-    data = data.encode('ascii')
+def docid(url, encoding='ascii'):
+    """Get DocID from URL.
+
+    Args:
+        url (str or bytes): URL to be process.
+        encoding (str, optional): Defaults to 'ascii'. Encoding.
+
+    Returns:
+        DocID: The DocID object.
+
+    Examples:
+
+        >>> from os_docid import docid
+  
+        >>> docid('http://www.google.com/')
+        1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
+  
+        >>> docid('1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd')
+        1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
+  
+        >>> docid('1d5920f4b44b27a8ed646a3334ca891fff90821feeb2b02a33a6f9fc8e5f3fcd')
+        1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
+  
+        >>> docid('abc')  
+        NotImplementedError: Not supported data format
+
+    """
+
+    if not isinstance(url, bytes):
+        url = url.encode(encoding)
+
     parser = _URL_PARSER
     idx = 0
-    for c in data:
-        if c not in _HEX:
-            if not (c == _M_SIGN and (idx == _DOMAINID_LENGTH
-                                      or idx == _HOSTID_LENGTH + 1)):
-                return parser.parse(data, idx)
+    for _c in url:
+        if _c not in _HEX:
+            if not (_c == _SYM_MINUS and (idx == _DOMAINID_LENGTH
+                                          or idx == _HOSTID_LENGTH + 1)):
+                return parser.parse(url, idx)
         idx += 1
         if idx > 4:
             break
-    l = len(data)
-    if l == _DOCID_LENGTH:
+    _l = len(url)
+    if _l == _DOCID_LENGTH:
         parser = _DOCID_PARSER
-    elif l == _READABLE_DOCID_LENGTH \
-            and data[_DOMAINID_LENGTH] == _M_SIGN \
-            and data[_HOSTID_LENGTH + 1] == _M_SIGN:
+    elif _l == _READABLE_DOCID_LENGTH \
+            and url[_DOMAINID_LENGTH] == _SYM_MINUS \
+            and url[_HOSTID_LENGTH + 1] == _SYM_MINUS:
         parser = _R_DOCID_PARSER
     else:
         parser = _PARSER
 
-    return parser.parse(data, idx)
+    return parser.parse(url, idx)

@@ -33,16 +33,15 @@ DocID for fun.
   * Command line
   ```
     $ os-docid -h
-    usage: os-docid [-h] [-f INPUT_FILE] [-o {a,o}]
+    usage: os-docid [-h] [-v] [-f INPUT [INPUT ...]]
 
     Generate DocID.
 
     optional arguments:
       -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
       -f INPUT_FILE, --file INPUT_FILE
                             file to be process (default: stdin)
-      -o {a,o}, --output {a,o}
-                            output format (default: [o]nly docid)
   ```
 
 # Unit Tests
