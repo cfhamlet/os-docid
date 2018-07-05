@@ -41,7 +41,7 @@ def execute(argv=None):
             continue
         d = b'E'
         try:
-            d = docid(line).bytes()
+            d = str(docid(line)).encode()
         except:
             pass
         binary_stdout.write(d)

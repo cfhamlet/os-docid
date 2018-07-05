@@ -5,6 +5,7 @@ This file can be used alone.
 
 import binascii
 import hashlib
+from collections import namedtuple
 
 _DOMAINID_LENGTH = 16
 _SITEID_LENGTH = 16
@@ -47,15 +48,27 @@ _TOP_DOMAIN_SET = set([
 _TOP_DOMAIN_SET = set([_i.encode() for _i in _TOP_DOMAIN_SET])
 
 
-class DocID(object):
-    def __init__(self, b_domainid, b_siteid, b_urlid):
-        self._b_parts = (b_domainid, b_siteid, b_urlid)
+class DocID(namedtuple('DocID', 'd_bytes, s_bytes, u_bytes')):
+    """DocID.
+
+    Attributes:
+        d_bytes (bytes): Domain id bytes.
+        s_bytes (bytes): Site id bytes.
+        u_bytes (bytes): URL id bytes.
+
+    """
+
+    __slots__ = ()
+
+    @property
+    def bytes(self):
+        return b''.join(self)
+
+    def hexlify(self, sep=b''):
+        return sep.join(binascii.hexlify(_i) for _i in self)
 
     def __str__(self):
-        return self.bytes().decode()
-
-    def bytes(self):
-        return b'-'.join([binascii.hexlify(_i) for _i in self._b_parts])
+        return self.hexlify(sep=b'-').decode()
 
     __repr__ = __str__
 
@@ -169,16 +182,16 @@ def docid(url, encoding='ascii'):
     Examples:
 
         >>> from os_docid import docid
-  
+
         >>> docid('http://www.google.com/')
         1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
-  
+
         >>> docid('1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd')
         1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
-  
+
         >>> docid('1d5920f4b44b27a8ed646a3334ca891fff90821feeb2b02a33a6f9fc8e5f3fcd')
         1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd
-  
+
         >>> docid('abc')  
         NotImplementedError: Not supported data format
 
