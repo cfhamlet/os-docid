@@ -35,6 +35,14 @@ def test_invalid_data():
         with pytest.raises(NotImplementedError):
             docid(data)
 
+
+def test_equal():
+    url = 'http://g.com/'
+    assert docid(url) == docid(url)
+    assert docid(url) != docid(url + 'a')
+
+
 def test_benchmark_docid(benchmark):
     result = benchmark(docid, 'http://www.google.com/')
-    assert str(result) == '1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd'
+    assert str(
+        result) == '1d5920f4b44b27a8-ed646a3334ca891f-ff90821feeb2b02a33a6f9fc8e5f3fcd'
