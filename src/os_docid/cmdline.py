@@ -27,16 +27,16 @@ def execute(argv=None):
                                 version=__version__)
                         )
 
-    parser.add_argument('-f', '--file',
-                        help='file to be process (default: stdin)',
+    parser.add_argument('-f', '--files',
+                        help='files to be process (default: stdin)',
                         nargs='+',
                         type=argparse.FileType('rb'),
                         default=[binary_stdin],
-                        dest='input')
+                        dest='files')
 
     args = parser.parse_args(argv[1:])
 
-    for line in chain.from_iterable(args.input):
+    for line in chain.from_iterable(args.files):
         line = line.strip()
         if not line:
             continue
