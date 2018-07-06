@@ -172,9 +172,15 @@ _R_DOCID_PARSER = ReadableDocIDParser()
 def docid(url, encoding='ascii'):
     """Get DocID from URL.
 
+    DocID generation depends on bytes of the URL string.
+    So, if non-ascii charactors in the URL, encoding should
+    be considered properly.
+
     Args:
-        url (str or bytes): URL to be process.
-        encoding (str, optional): Defaults to 'ascii'. Encoding.
+        url (str or bytes): Pre-encoded bytes or string will be encoded with the
+            'encoding' argument.
+        encoding (str, optional): Defaults to 'ascii'. Used to encode url argument
+            if it is not pre-encoded into bytes.
 
     Returns:
         DocID: The DocID object.
