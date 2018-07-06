@@ -2,10 +2,10 @@
 
 import argparse
 import sys
+from itertools import chain
 
 from . import __version__
 from .x import docid
-from itertools import chain
 
 _PY3 = sys.version_info[0] == 3
 if _PY3:
