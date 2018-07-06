@@ -5,6 +5,7 @@ import sys
 
 from . import __version__
 from .x import docid
+from itertools import chain
 
 _PY3 = sys.version_info[0] == 3
 if _PY3:
@@ -35,7 +36,7 @@ def execute(argv=None):
 
     args = parser.parse_args(argv[1:])
 
-    for line in args.input[0]:
+    for line in chain.from_iterable(args.input):
         line = line.strip()
         if not line:
             continue
