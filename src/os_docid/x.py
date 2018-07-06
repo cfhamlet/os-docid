@@ -70,13 +70,6 @@ class DocID(namedtuple('DocID', 'd_bytes, s_bytes, u_bytes')):
     def __str__(self):
         return self.hexlify(sep=b'-').decode()
 
-    def __eq__(self, o):
-        if not isinstance(o, DocID):
-            return False
-        return self.d_bytes == o.d_bytes \
-            and self.s_bytes == o.s_bytes \
-            and self.u_bytes == o.u_bytes
-
     __repr__ = __str__
 
 
