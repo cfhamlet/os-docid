@@ -14,6 +14,7 @@ DocID for fun.
 # Usage
 
   * API
+
   ```
   >>> from os_docid import docid
   
@@ -28,20 +29,22 @@ DocID for fun.
   
   >>> docid('abc')  
   NotImplementedError: Not supported data format
+
   ```
 
   * Command line
+
   ```
-    $ os-docid -h
-    usage: os-docid [-h] [-v] [-f FILES [FILES ...]]
+  $ os-docid -h
+  usage: os-docid [-h] [-v] [-f FILES [FILES ...]]
 
-    Generate DocID.
+  Generate DocID.
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      -v, --version         show program's version number and exit
-      -f FILES [FILES ...], --files FILES [FILES ...]
-                            files to be process (default: stdin)
+  optional arguments:
+    -h, --help            show this help message and exit
+    -v, --version         show program's version number and exit
+    -f FILES [FILES ...], --files FILES [FILES ...]
+                          files to be process (default: stdin)
   ```
 
 # Unit Tests
