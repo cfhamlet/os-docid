@@ -125,8 +125,9 @@ class UrlParser(Parser):
                 if _i + 2 < url_length \
                         and url[_i + 1] == _SYM_SLASH \
                         and url[_i + 2] == _SYM_SLASH:
-                    _i += 3
+                    _i += 2
                     domain_head = domain_pre_head = domain_post_head = domain_tail = _i
+                    _i += 1
                     continue
                 elif not find_domain:
                     deal_domain = True
@@ -227,3 +228,8 @@ def docid(url, encoding='ascii'):
         parser = _PARSER
 
     return parser.parse(url, idx)
+
+
+if __name__ == "__main__":
+    url = "http://watch-my-gf.me/js/mes.js"
+    print(docid(url))
