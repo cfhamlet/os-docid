@@ -7,3 +7,4 @@ source = os_docid
 source =
     src/os_docid
     .tox/*/lib/python*/site-packages/os_docid
+    .tox/*/site-packages/os_docid
