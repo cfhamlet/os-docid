@@ -10,7 +10,7 @@ matrix:
       env: TOXENV=pypy
     - python: pypy3.5
       env: TOXENV=pypy3
-    - env: TOXENV=coverage
+    - env: TOXENV=coverage-report
 install:
 - pip install -U pip tox codecov
 script:
