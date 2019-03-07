@@ -3,7 +3,12 @@ parallel = true
 branch = true
 source = os_docid
 
+[report]
+exclude_lines =
+    if __name__ == "__main__":
+
 [paths]
 source =
     src/os_docid
     .tox/*/lib/python*/site-packages/os_docid
+    .tox/*/site-packages/os_docid

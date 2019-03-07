@@ -227,3 +227,7 @@ def docid(url, encoding='ascii'):
         parser = _PARSER
 
     return parser.parse(url, idx)
+
+if __name__ == "__main__":
+    url = "http://www.google.com/"
+    print(docid(url))
