@@ -3,6 +3,10 @@ parallel = true
 branch = true
 source = os_docid
 
+[report]
+exclude_lines =
+    if __name__ == "__main__":
+
 [paths]
 source =
     src/os_docid

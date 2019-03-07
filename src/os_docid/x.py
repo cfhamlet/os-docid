@@ -231,5 +231,5 @@ def docid(url, encoding='ascii'):
 
 
 if __name__ == "__main__":
-    url = "http://watch-my-gf.me/js/mes.js"
+    url = "http://www.google.com/"
     print(docid(url))
