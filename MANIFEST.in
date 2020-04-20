@@ -1,7 +1,10 @@
 include LICENSE
 include README.md
 include MANIFEST.in
-include requirements.txt
+include requirements/requirements.txt
 include src/os_docid/VERSION
-recursive-include tests *.py
+graft src
+graft tests
+global-exclude __pycache__
+global-exclude *.py[co]
 

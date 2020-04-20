@@ -22,10 +22,11 @@ setup(
     license='MIT License',
     description='DocID for fun.',
     long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     author='Ozzy',
     author_email='cfhamlet@gmail.com',
     url='https://github.com/cfhamlet/os-docid',
-    install_requires=open('requirements.txt').read().split('\n'),
+    install_requires=open('requirements/requirements.txt').read().split('\n'),
     python_requires='>=2.7',
     zip_safe=False,
     entry_points={

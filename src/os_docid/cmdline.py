@@ -19,20 +19,24 @@ else:
 def execute(argv=None):
     argv = argv or sys.argv
 
-    parser = argparse.ArgumentParser(description='Generate DocID.')
+    parser = argparse.ArgumentParser(description="Generate DocID.")
 
-    parser.add_argument('-v', '--version',
-                        action='version',
-                        version='%(prog)s {version}'.format(
-                                version=__version__)
-                        )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s {version}".format(version=__version__),
+    )
 
-    parser.add_argument('-f', '--files',
-                        help='files to be process (default: stdin)',
-                        nargs='+',
-                        type=argparse.FileType('rb'),
-                        default=[binary_stdin],
-                        dest='files')
+    parser.add_argument(
+        "-f",
+        "--files",
+        help="files to be process (default: stdin)",
+        nargs="+",
+        type=argparse.FileType("rb"),
+        default=[binary_stdin],
+        dest="files",
+    )
 
     args = parser.parse_args(argv[1:])
 
@@ -40,16 +44,16 @@ def execute(argv=None):
         line = line.strip()
         if not line:
             continue
-        d = b'E'
+        d = b"E"
         try:
             d = str(docid(line)).encode()
         except:
             pass
         binary_stdout.write(d)
-        binary_stdout.write(b'\t')
+        binary_stdout.write(b"\t")
         binary_stdout.write(line)
-        binary_stdout.write(b'\n')
+        binary_stdout.write(b"\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     execute()
